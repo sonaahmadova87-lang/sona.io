@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Всемирные открытия</title>
+
+    <link rel="icon"
+href="https://edube.org/uploads/media/default/0001/04/web-favicon.png" type="image/png"
+
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>Всемирные открытия &#x1F30D</h1>
+    <p>Нажмите кнопку, чтобы узнать о континенте, на котором вы находитесь, и о некоторых известных географических объектах.</p>
+
+    <button id="discoverLocation">Узнать местоположение</button>
+
+    <img 
+src="https://edube.org/uploads/media/default/0001/04/continents.jpg" usemap="#image-map" alt="World Map">
+    <map name="image-map">
+
+        <area target="" alt="North America" title="North America" id="north-america" coords="386,283,41,17" shape="rect"
+href="javascript:void(0);">
+        <area target="" alt="South America" title="South America" id="south-america" coords="209,501,358,288" shape="rect"
+href="javascript:void(0);">
+        <area target="" alt="Europe" title="Europe" id="europe" coords="391,68,505,217" shape="rect"
+href="javascript:void(0);">
+        <area target="" alt="Africa" title="Africa" id="africa" coords="533,217,387,448" shape="rect"
+href="javascript:void(0);">
+        <area target="" alt="Asia" title="Asia" id="asia" coords="893,153,506,1" shape="rect"
+href="javascript:void(0);">
+        <area target="" alt="Australia and Oceania" title="Australia and Oceania" id="australia-and-oceania" coords="679,353,872,480" shape="rect"
+href="javascript:void(0);">
+    </map>
+
+</body>
+</html>
+
+    <!-- JavaScript code provided by your teammate -->
+     
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const continentInfo = {
+        'north-america': {
+            континент: 'Северная Америка',
+            река: 'Река Миссисипи',
+            гора: 'Денали',
+            достопримечательности: 'Гранд-Каньон, Статуя Свободы, Ниагарский водопад'
+        },
+
+        'south-america': {
+            континент: 'Южная Америка',
+            река: 'Река Амазонка',
+            гора: 'Аконкагуа',
+            достопримечательности: 'Мачу-Пикчу, Галапагосские острова'
+        },
+
+        'europe': {
+            континент: 'Европа',
+            река: 'Река Дунай',
+            гора: 'Монблан',
+            достопримечательности: 'Эйфелева башня, Колизей, Афинский Акрополь'
+        },
+
+        'africa': {
+            континент: 'Африка',
+            река: 'Река Нил',
+            гора: 'Гора Килиманджаро',
+            достопримечательности: 'Сфинкс, Столовая гора'
+        },
+
+        'asia': {
+            континент: 'Азия',
+            река: 'Река Янцзы',
+            гора: 'Эверест',
+            достопримечательности: 'Великая Китайская стена, Петра'
+        },
+
+        'australia-and-oceania': {
+            континент: 'Австралия и Океания',
+            река: 'Река Муррей',
+            гора: 'Гора Косцюшко',
+            достопримечательности: 'Сиднейский оперный театр, Большой Барьерный риф, Улуру'
+        }
+    };
+
+
+    function displayContinentInfo(continentId) {
+
+        const info = continentInfo[continentId];
+
+        if (info) {
+
+            alert(
+                `Континент: ${info.континент}\n` +
+                `Река: ${info.река}\n` +
+                `Гора: ${info.гора}\n` +
+                `Достопримечательности: ${info.достопримечательности}`
+            );
+
+        } else {
+
+            alert('Информация недоступна');
+
+        }
+    }
+
+
+    document.querySelectorAll('area').forEach(area => {
+
+        area.addEventListener('click', function () {
+
+            const continentId = this.id;
+
+            displayContinentInfo(continentId);
+
+        });
+
+    });
+
+
+    const discoverLocationButton =
+        document.getElementById('discoverLocation');
+
+
+    discoverLocationButton.addEventListener('click', () => {
+
+        if ("geolocation" in navigator) {
+
+            navigator.geolocation.getCurrentPosition(
+
+                (position) => {
+
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    const continentId =
+                        determineContinentByGeo(latitude, longitude);
+
+                    displayContinentInfo(continentId);
+
+                },
+
+                (error) => {
+
+                    alert(
+                        "Ошибка определения местоположения: " +
+                        error.message
+                    );
+
+                }
+            );
+
+        } else {
+
+            alert(
+                "Ваш браузер не поддерживает определение местоположения."
+            );
+
+        }
+
+    });
+
+
+    function determineContinentByGeo(latitude, longitude) {
+
+        if (latitude > 35 && longitude > -10 && longitude < 40) {
+
+            return 'europe';
+
+        } else if (
+            latitude < 0 &&
+            longitude > -80 &&
+            longitude < -34
+        ) {
+
+            return 'south-america';
+
+        } else if (
+            latitude > 0 &&
+            longitude > -130 &&
+            longitude < -70
+        ) {
+
+            return 'north-america';
+
+        } else if (
+            latitude > 5 &&
+            latitude < 60 &&
+            longitude > 40 &&
+            longitude < 180
+        ) {
+
+            return 'asia';
+
+        } else if (
+            latitude > -35 &&
+            latitude < 35 &&
+            longitude > 10 &&
+            longitude < 50
+        ) {
+
+            return 'africa';
+
+        } else if (
+            latitude < -10 &&
+            longitude > 110 &&
+            longitude < 180
+        ) {
+
+            return 'australia-and-oceania';
+
+        }
+
+        alert("Не удалось определить континент по вашему местоположению.");
+
+        return null;
+    }
+
+});
+</script>
